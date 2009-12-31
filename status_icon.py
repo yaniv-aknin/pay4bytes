@@ -2,6 +2,8 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 
+from format_sizes import human_readable
+
 class StatusIcon(object):
     def __init__(self, menuItems):
         self.statusIcon = gtk.StatusIcon()
@@ -20,8 +22,9 @@ class StatusIcon(object):
         result = ['pay4bytes']
         for device_name, device_stats in devices_map.items():
             result.append('%s: RX %s x TX %s' %
-                          (device_name, device_stats.receive.bytes,
-                           device_stats.transmit.bytes))
+                          (device_name,
+                           human_readable(device_stats.receive.bytes),
+                           human_readable(device_stats.transmit.bytes)))
         self.statusIcon.set_tooltip("\n".join(result))
 
     def show(self):
