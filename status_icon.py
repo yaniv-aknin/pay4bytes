@@ -1,5 +1,3 @@
-import pygtk
-pygtk.require('2.0')
 import gtk
 
 from format_sizes import human_readable
