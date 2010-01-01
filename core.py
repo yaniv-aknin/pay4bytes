@@ -6,7 +6,7 @@ from twisted.python import log
 import gtk
 
 from status_icon import StatusIcon
-from netdevs import read_network_devices_statistics_map
+from netdevs import readNetworkDevicesStatisticsMap
 
 class Pay4BytesCore(Service):
     IReactorTimeProvider = reactor
@@ -29,4 +29,4 @@ class Pay4BytesCore(Service):
         self.timer.stop()
 
     def updateStatistics(self):
-        self.statusIcon.updateTooltip(read_network_devices_statistics_map())
+        self.statusIcon.updateTooltip(readNetworkDevicesStatisticsMap())

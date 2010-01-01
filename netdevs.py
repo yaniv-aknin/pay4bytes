@@ -10,22 +10,25 @@ Statistics = namedtuple('Statistics', 'bytes packets errors dropped fifo frames 
 
 
 if platform.system() == 'Linux' and os.path.isfile('/proc/net/dev'):
-    def read_network_devices_statistics_map():
-        with file('/proc/net/dev') as file_handle:
+    def readNetworkDevicesStatisticsMap():
+        with file('/proc/net/dev') as fileHandle:
             result = {}
             # NOTE: skip the header lines
-            file_handle.readline()
-            file_handle.readline()
+            fileHandle.readline()
+            fileHandle.readline()
             # TODO: it is assumed the format of /proc/net/dev is as expected
-            for line in file_handle:
-                device, raw_statistics = line.split(':')
-                split_statistics = [int(datum) for datum in raw_statistics.split()]
-                receive, transmit = split_statistics[:8], split_statistics[8:]
-                result[device.strip()] = Direction(receive=Statistics(*receive),
-                                                   transmit=Statistics(*transmit))
+            for line in fileHandle:
+                device, rawStatistics = line.split(':')
+                splitStatistics = [int(datum) for datum in
+                                   rawStatistics.split()]
+                receive, transmit = splitStatistics[:8], splitStatistics[8:]
+                result[device.strip()] = \
+                    Direction(receive=Statistics(*receive),
+                              transmit=Statistics(*transmit))
             return result
 else:
-    message = 'read_network_devices_statistics() not implemented on this platform'
+    message = 'readNetworkDevicesStatisticsMap() not implemented on this ' \
+              'platform'
     warnings.warn(message)
-    def read_network_devices_statistics():
+    def readNetworkDevicesStatisticsMap():
         raise NotImplementedError(message)
