@@ -1,4 +1,4 @@
-def human_readable(bytes):
+def humanReadable(bytes):
     suffixes = ['b', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']
     current = bytes
     while current > 1024:

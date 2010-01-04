@@ -23,12 +23,13 @@ class Pay4BytesCore(Service):
         self.configuration = Configuration()
         self.connectionRegistry = None
         self.timer = LoopingCall(self.updateStatistics)
+        self.timer.clock = self.IReactorTimeProvider
 
     def startService(self):
         Service.startService(self)
         self.configuration.load()
         self.connectionRegistry = \
-            ConnectionRegistry(self.createConfiguredDeviceMap())
+            ConnectionRegistry( self.createConfiguredDeviceMap())
         self.timer.start(self.updateInterval).addErrback(log.err)
         self.statusIcon.show()
 
@@ -47,7 +48,7 @@ class Pay4BytesCore(Service):
     def updateStatistics(self):
         statisticsMap = readNetworkDevicesStatisticsMap()
         self.connectionRegistry.updateConnections(statisticsMap)
-        self.statusIcon.updateTooltip(statisticsMap)
+        self.statusIcon.updateTooltip(self.connectionRegistry)
 
     def createConfiguredDeviceMap(self):
         result = {}
